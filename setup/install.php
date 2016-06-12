@@ -8,8 +8,8 @@ header("content-type:text/html; charset=utf-8");
 require SYSTEM_ROOT2.'/../lib/msg.php';
 include SYSTEM_ROOT2.'/../lib/class.wcurl.php';
 
-if (file_exists(SYSTEM_ROOT2.'/install.lock')) {
-    msg('错误：安装锁定，请删除以下文件后再安装：<br/><br/>/setup/install.lock<br/><br/>或者点击下面的按钮返回站点取消安装：', '../');
+if (file_exists(SYSTEM_ROOT.'/config.php')) {
+    msg('错误：config.php文件已存在，不需要安装<br/><br/>警告：删除config.php文件后仅可<font color="red">全新</font>安装', '../');
 }
 /*
 $csrf = !empty($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER']) : '';
@@ -82,7 +82,6 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 				break;
 
 			case '3':
-				$errorhappen = '';
 				if (isset($_SERVER['HTTPS']) == 'on') {
 					$http = 'https://';
 				} else {
@@ -99,42 +98,18 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 				define('DB_PASSWD', getenv('OPENSHIFT_MYSQL_DB_PASSWORD'));
 				define('DB_NAME', getenv('OPENSHIFT_APP_NAME'));
 				define('DB_PREFIX','yh_');
+				define('USERPW_SALT',base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)));
+				function EncryptPwd($pwd) {$s=base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM));return md5($pwd.USERPW_SALT.$s).$s;}
 				$sql  = str_ireplace('{VAR-PREFIX}', DB_PREFIX, file_get_contents(SYSTEM_ROOT2.'/install.template.sql'));
 				$sql  = str_ireplace('{VAR-DB}', DB_NAME, $sql);
 				$sql  = str_ireplace('{VAR-ISAPP}', $isapp, $sql);
 				$sql  = str_ireplace('{VAR-TOOLPW}', '', $sql);
 				//$sql  = str_ireplace('{VAR-TOOLPW}', md5(md5(md5($_POST['toolpw']))), $sql);
 				$sql  = str_ireplace('{VAR-SYSTEM-URL}', $http . $_SERVER['HTTP_HOST'] . str_ireplace('setup/', '', $sysurl[0]), $sql);
-				$sql .= "\n"."INSERT INTO `".DB_NAME."`.`".DB_PREFIX."users` (`name`, `pw`, `email`, `role`) VALUES ('{$_POST['user']}', '".md5(md5(md5($_POST['pw'])))."', '{$_POST['mail']}', 'admin');";
+				$sql .= "\n"."INSERT INTO `".DB_NAME."`.`".DB_PREFIX."users` (`name`, `pw`, `email`, `role`) VALUES ('{$_POST['user']}', '".EncryptPwd($_POST['pw'])."', '{$_POST['mail']}', 'admin');";
 				require SYSTEM_ROOT.'/lib/mysql_autoload.php';
-					global $m;
-					$testInstall = $m->fetch_row($m->query("SHOW TABLES LIKE '".DB_PREFIX."users'"));
-					if (!empty($testInstall[0])) {
-						if (!empty($_POST['force_user']) && !empty($_POST['force_pw'])) {
-							$force_user = !empty($_POST['force_user']) ? addslashes($_POST['force_user']) : msg('请输入原站点的管理员用户名');
-							$force_pw   = !empty($_POST['force_pw'])   ? addslashes($_POST['force_pw'])   : msg('请输入原站点的管理员密码');
-							$account    = $m->once_fetch_array("SELECT * FROM `".DB_PREFIX."users` WHERE `name` = '{$force_user}';");
-							if (empty($account['role'])) {
-								msg('原站点的管理员用户名错误，请返回重新输入');
-							} elseif ($account['pw'] != md5(md5(md5($force_pw)))) {
-								msg('原站点的管理员密码错误，请返回重新输入<br/><br/>注：暂时不支持自定义加密方式的用户重装站点');
-							} elseif ($account['role'] != 'admin') {
-								msg('权限不足');
-							}
-						} else {
-							echo '<h2>请输入原站点的管理员用户名和密码</h2><br/>';
-							echo '<div class="progress progress-striped"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 50%"><span class="sr-only">50%</span></div></div>';
-							echo '检测到站点已经安装过 '.SYSTEM_FN . ' 了，如果需要继续安装，请输入待覆盖站点管理员用户名和密码（不是刚才输入的创始人用户名和密码）<br/><br/>如果继续安装，您的站点的数据将会全部恢复到云签到初始状态<br/><br/>';
-							echo '<form action="install.php?step=3" method="post">';
-							echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">用户名</span><input type="text" class="form-control" name="force_user" required></div><br/>';
-							echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">密码</span><input type="password" class="form-control" name="force_pw" required></div><br/>';
-							foreach ($_POST as $key => $value) {
-								echo '<input type="hidden" name="'.$key.'" value="'.$value.'">';
-							}
-							echo '<br/><input type="submit" class="btn btn-success" value="下一步 >>"></form>';
-							die;
-						}
-					}
+				global $m;
+				$m->multi_query($sql);
 				$write_data = '<?php if (!defined(\'SYSTEM_ROOT\')) { die(\'Insufficient Permissions\'); }
 /*
 |--------------------------------------------------------------------------
@@ -150,10 +125,9 @@ define(\'DB_USER\',\''.DB_USER.'\');
 define(\'DB_PASSWD\',\''.DB_PASSWD.'\');
 define(\'DB_NAME\',\''.DB_NAME.'\');
 define(\'DB_PREFIX\',\''.DB_PREFIX.'\');
-define(\'USERPW_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)).'\');
+define(\'USERPW_SALT\',\''.USERPW_SALT.'\');
 define(\'SYSTEM_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)).'\');';
 					file_put_contents('../config.php', $write_data);
-					$m->multi_query($sql);
 					echo '<script src="stat.js?type=tcs&ver='.SYSTEM_VER.'"></script>';
 					echo '<div class="progress progress-striped">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
@@ -171,8 +145,7 @@ define(\'SYSTEM_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM
     <span class="sr-only">90%</span>
   </div>
 </div>';
-				echo '恭喜你，安装基本完成<br/><br/>请确认添加了Cron 1.4，会自动执行计划任务，否则，签到不会自动进行。<br/><br/><input type="button" onclick="location = \'../index.php\'" class="btn btn-success" value="进入我的云签到 >>">';
-				@file_put_contents(SYSTEM_ROOT2.'/install.lock', '1');
+				echo '恭喜你，安装完成<br/><br/>请确认添加了Cron 1.4，会自动执行计划任务，否则，签到不会自动进行。<br/><br/><input type="button" onclick="location = \'../index.php\'" class="btn btn-success" value="进入我的云签到 >>">';
 				break;
 
 			default:

@@ -107,12 +107,8 @@ if (ROLE == 'admin') {
 				echo '<br/><font color="red"><span class="glyphicon glyphicon-warning-sign"></span> <b>警告：</b></font>计划任务今天尚未运行，是否已设置 <b>do.php</b> 到您的主机的计划任务？';
 			}
 			echo '</li>';
-			if (!file_exists(SYSTEM_ROOT . '/setup/install.lock')) {
-				echo '<li class="list-group-item"><font color="red"><span class="glyphicon glyphicon-warning-sign"></span> <b>安全性警告：</b></font>未找到 <b>/setup/install.lock</b> 文件，站点将有被恶意重装的风险，请务必建立一个空的 install.lock 文件，<a href="setting.php?mod=admin:create_lock">点此建立</a>';
-			}
 			doAction('index_p_3');
-		
-            if(defined('SYSTEM_KEY')) {
+			if(defined('SYSTEM_KEY')) {
                 echo '<li class="list-group-item">商业授权密钥：' . SYSTEM_KEY . '</li>';
             }
 		?>
