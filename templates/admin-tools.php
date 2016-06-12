@@ -53,6 +53,7 @@ if (isset($_GET['ok'])) {
 <!--
 <br/><br/><input type="button" onclick="if(confirm('将花费较长时间，请确认此操作')) location = '<?php echo SYSTEM_URL ?>setting.php?mod=admin:tools&setting=updatefid'" class="btn btn-primary" value="更新未记录的 FID" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;签到时会自动将没有被缓存的 FID 缓存下来，您也可以手动更新 FID 提高签到效率
 -->
+<br/><br/><input type="button" data-toggle="modal" data-target="#showdbpw" class="btn btn-primary" value="数据库信息" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;管理数据库
 <?php doAction('admin_tools_3'); ?>
 
 <br/><br/>
@@ -169,5 +170,22 @@ if (isset($_GET['ok'])) {
       </div>
       </form>
     </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="showdbpw" tabindex="-1" role="dialog" aria-labelledby="showdbpw" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">数据库信息</h4>
+      </div>
+      <div class="modal-body">
+        数据库地址：<?php echo DB_HOST ?><br/>数据库用户名：<?php echo DB_USER ?><br/>数据库密码：<?php echo DB_PASSWD ?><br/>数据库名称：<?php echo DB_NAME ?><br/>当前数据库前缀：<?php echo DB_PREFIX ?>
+      </div>
+	  <div class="modal-footer">
+        <a href="<?php echo SYSTEM_URL ?>plugins/KODExplorer/lib/plugins/adminer/" target="_blank"><button type="submit" class="btn btn-primary" >打开 Adminer</button></a>
+      </div>
+	 </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

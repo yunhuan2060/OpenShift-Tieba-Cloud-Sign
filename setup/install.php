@@ -36,11 +36,12 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="install.php">贴吧云签到安装</a>
+    <a class="navbar-brand" href="install.php">贴吧云签到安装（OpenShift专版）</a>
   </div>
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-          <li><a href="http://www.stus8.com" target="_blank">StusGame GROUP</a></li>
+          <li><a href="http://www.stus8.com" target="_blank">StusGame GROUP版权所有</a></li>
+		  <li><a href="http://www.yunhuan.tk" target="_blank">云幻修改</a></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </div>
@@ -53,35 +54,6 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 		echo '<input type="button" onclick=";alert(\'请立即删除所有与本程序相关的文件及其延伸产品\');location = \'index.html\';" class="btn btn-danger" value="我拒绝">';
 	} else {
 		switch (strip_tags($_GET['step'])) {
-			case '100':
-				echo '<h2>手动修改配置</h2><br/>';
-				echo '<div class="progress progress-striped">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
-    <span class="sr-only">25%</span>
-  </div>
-</div>';
-
-				echo '请按照注释修改 /<b>config.php</b><br/><br/><font color="red">警告：</font>切勿使用记事本修改；文件编码应该为 UTF-8 ( 无BOM )';
-				echo '<br/><br/><div class="alert alert-success"><pre>
-&lt?php if (!defined(\'SYSTEM_ROOT\')) { die(\'Insufficient Permissions\'); }
-
-//BAE/SAE/JAE的数据库地址，用户名，密码请参考相关文档
-
-//MySQL 数据库地址，普通主机一般为localhost
-define(\'DB_HOST\',\'localhost\');
-//MySQL 数据库用户名
-define(\'DB_USER\',\'root\');
-//MySQL 数据库密码
-define(\'DB_PASSWD\',\'000000\');
-//MySQL 数据库名称(存放百度贴吧云签到的)
-define(\'DB_NAME\',\'tiebacloud\');
-//MySQL 数据库前缀，建议保持默认
-define(\'DB_PREFIX\',\'tc_\');
-</pre></div>';
-				echo '<b>参考文档：</b>BAE | SAE | JAE';
-				echo '<br/><br/><br/><br/>修改完成后，请点击下一步<br/><br/><input type="button" onclick="location = \'install.php?step=3&bae\'" class="btn btn-success" value="下一步 >>">';
-				break;
-
 			case '1':
 				echo '<h2>准备安装: 功能检查</h2><br/>';
 				echo '<div class="progress progress-striped">
@@ -93,41 +65,15 @@ define(\'DB_PREFIX\',\'tc_\');
 		include SYSTEM_ROOT2.'/check.php';
 		echo '<input type="button" onclick="location = \'install.php?step=2\'" class="btn btn-success" value="下一步 >>">';
 				break;
-
-			case '2':
-				echo '<h2>准备安装: 设置运行环境</h2><br/>';
-				echo '<div class="progress progress-striped">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-    <span class="sr-only">20%</span>
-  </div>
-</div>';
-				echo '<h4>你是在应用引擎或者不可写的主机上使用本程序吗？</h4><br/>';
-				echo '<li><a href="install.php?step=3">不，我不是</a></li><br/>';
-				echo '<li><a href="install.php?step=100">是的，我是</a></li>';
-				break;
-
-			case '3':
+				case '2':
 				echo '<h2>设置所需信息</h2><br/>';
 				echo '<div class="progress progress-striped">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
     <span class="sr-only">30%</span>
   </div>
 </div>';
-				echo '<h4>数据库信息</h4><br/>';
-				echo '<form action="install.php?step=4" method="post">';
-				if (isset($_GET['isbae']) || isset($_GET['bae'])) {
-					echo '<input type="hidden" name="isbae" value="1">';
-				}
-				echo '<b>提示 1：</b>如果您的主机没有明确给出数据库信息 (例如SAE给出的是常量) 并且您已经写好了 config.php ，请选择 [ <b>自动获得数据库配置信息</b> ] 为 <b>是</b><br/>';
-				echo '<b>提示 2：</b>如果程序并未写入数据库 [ 安装完成后进入首页提示 Table XX doesn\'t exist  ] 请选择强制手动导入 SQL<br/><br/>';
-				echo '<input type="checkbox" name="nosql" value="1"> 强制手动导入 SQL<br/><br/>';
-				echo '<div class="input-group"><span class="input-group-addon">自动获得数据库配置信息</span><select name="from_config" class="form-control"  onchange="if(this.value == \'0\') { $(\'#db_config\').show(); } else { $(\'#db_config\').hide(); }"><option value="0">否</option><option value="1">是</option></select></div><br/>';
-				echo '<div id="db_config"><div class="input-group"><span class="input-group-addon">数据库地址</span><input type="text" class="form-control" name="dbhost" value="localhost" placeholder=""></div><br/>';
-				echo '<div class="input-group"><span class="input-group-addon">数据库用户名</span><input type="text" class="form-control" name="dbuser" placeholder=""></div><br/>';
-				echo '<div class="input-group"><span class="input-group-addon">数据库密码</span><input type="text" class="form-control" name="dbpw" placeholder=""></div><br/>';
-				echo '<div class="input-group"><span class="input-group-addon">数据库名称</span><input type="text" class="form-control" name="dbname" placeholder=""></div><br/>';
-				echo '<div class="input-group"><span class="input-group-addon">数据表前缀</span><input type="text" class="form-control" name="dbprefix" value="tc_" placeholder=""></div><br/>';
-				echo '</div><h4>站点创始人信息</h4><br/>';
+				echo '<h4>站点创始人信息</h4><br/>';
+				echo '<form action="install.php?step=3" method="post">';
 				echo '<div class="input-group"><span class="input-group-addon">创始人用户名</span><input type="text" required class="form-control" name="user" placeholder=""></div><br/>';
 				echo '<div class="input-group"><span class="input-group-addon">创始人邮箱</span><input type="email" required class="form-control" name="mail" placeholder=""></div><br/>';
 				echo '<div class="input-group"><span class="input-group-addon">创始人密码</span><input type="password" required class="form-control" name="pw" placeholder=""></div><br/>';
@@ -135,7 +81,7 @@ define(\'DB_PREFIX\',\'tc_\');
 				echo '<br/><br/><input type="submit" class="btn btn-success" value="下一步 >>"></form>';
 				break;
 
-			case '4':
+			case '3':
 				$errorhappen = '';
 				if (isset($_SERVER['HTTPS']) == 'on') {
 					$http = 'https://';
@@ -148,15 +94,11 @@ define(\'DB_PREFIX\',\'tc_\');
 					$isapp = '0';
 				}
 				preg_match("/^.*\//", $_SERVER['SCRIPT_NAME'], $sysurl);
-				if($_POST['from_config'] == 1) {
-					require SYSTEM_ROOT2.'/../config.php';
-				} else {
-					define('DB_HOST',$_POST['dbhost']);
-					define('DB_USER',$_POST['dbuser']);
-					define('DB_PASSWD',$_POST['dbpw']);
-					define('DB_NAME',$_POST['dbname']);
-					define('DB_PREFIX',$_POST['dbprefix']);
-				}
+				define('DB_HOST', getenv('OPENSHIFT_MYSQL_DB_HOST') . ':' . getenv('OPENSHIFT_MYSQL_DB_PORT'));
+				define('DB_USER', getenv('OPENSHIFT_MYSQL_DB_USERNAME'));
+				define('DB_PASSWD', getenv('OPENSHIFT_MYSQL_DB_PASSWORD'));
+				define('DB_NAME', getenv('OPENSHIFT_APP_NAME'));
+				define('DB_PREFIX','yh_');
 				$sql  = str_ireplace('{VAR-PREFIX}', DB_PREFIX, file_get_contents(SYSTEM_ROOT2.'/install.template.sql'));
 				$sql  = str_ireplace('{VAR-DB}', DB_NAME, $sql);
 				$sql  = str_ireplace('{VAR-ISAPP}', $isapp, $sql);
@@ -164,8 +106,7 @@ define(\'DB_PREFIX\',\'tc_\');
 				//$sql  = str_ireplace('{VAR-TOOLPW}', md5(md5(md5($_POST['toolpw']))), $sql);
 				$sql  = str_ireplace('{VAR-SYSTEM-URL}', $http . $_SERVER['HTTP_HOST'] . str_ireplace('setup/', '', $sysurl[0]), $sql);
 				$sql .= "\n"."INSERT INTO `".DB_NAME."`.`".DB_PREFIX."users` (`name`, `pw`, `email`, `role`) VALUES ('{$_POST['user']}', '".md5(md5(md5($_POST['pw'])))."', '{$_POST['mail']}', 'admin');";
-				if (!isset($_POST['nosql'])) {
-					require SYSTEM_ROOT.'/lib/mysql_autoload.php';
+				require SYSTEM_ROOT.'/lib/mysql_autoload.php';
 					global $m;
 					$testInstall = $m->fetch_row($m->query("SHOW TABLES LIKE '".DB_PREFIX."users'"));
 					if (!empty($testInstall[0])) {
@@ -184,7 +125,7 @@ define(\'DB_PREFIX\',\'tc_\');
 							echo '<h2>请输入原站点的管理员用户名和密码</h2><br/>';
 							echo '<div class="progress progress-striped"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 50%"><span class="sr-only">50%</span></div></div>';
 							echo '检测到站点已经安装过 '.SYSTEM_FN . ' 了，如果需要继续安装，请输入待覆盖站点管理员用户名和密码（不是刚才输入的创始人用户名和密码）<br/><br/>如果继续安装，您的站点的数据将会全部恢复到云签到初始状态<br/><br/>';
-							echo '<form action="install.php?step=4" method="post">';
+							echo '<form action="install.php?step=3" method="post">';
 							echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">用户名</span><input type="text" class="form-control" name="force_user" required></div><br/>';
 							echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">密码</span><input type="password" class="form-control" name="force_pw" required></div><br/>';
 							foreach ($_POST as $key => $value) {
@@ -194,68 +135,43 @@ define(\'DB_PREFIX\',\'tc_\');
 							die;
 						}
 					}
-				}
-				if (!isset($_POST['isbae'])) {
-					$write_data = '<?php if (!defined(\'SYSTEM_ROOT\')) { die(\'Insufficient Permissions\'); }
-//特别警告：请勿使用记事本编辑！！！如果你正在使用记事本并且还没有保存，赶紧关掉！！！
-//如果你已经用记事本保存了，请立即下载最新版的云签到包解压并覆盖本文件
-
-//BAE/SAE/JAE的数据库地址，用户名，密码请参考相关文档
-
-//MySQL 数据库地址，普通主机一般为localhost
+				$write_data = '<?php if (!defined(\'SYSTEM_ROOT\')) { die(\'Insufficient Permissions\'); }
+/*
+|--------------------------------------------------------------------------
+| 贴吧云签到基础配置文件 - 不要修改！不要修改！不要修改！
+|--------------------------------------------------------------------------
+|
+| 根据系统变量自动设置，切勿修改
+| 带SALT的为盐值，其中USERPW_SALT一旦修改，所有用户无法登陆！
+|
+*/
 define(\'DB_HOST\',\''.DB_HOST.'\');
-//MySQL 数据库用户名
 define(\'DB_USER\',\''.DB_USER.'\');
-//MySQL 数据库密码
 define(\'DB_PASSWD\',\''.DB_PASSWD.'\');
-//MySQL 数据库名称(存放百度贴吧云签到的)
 define(\'DB_NAME\',\''.DB_NAME.'\');
-//MySQL 数据库前缀，建议保持默认
 define(\'DB_PREFIX\',\''.DB_PREFIX.'\');
-//加密用盐，请乱打，留空为不使用盐
-define(\'SYSTEM_SALT\',\'\');';
-					if(empty($_POST['from_config']) && !file_put_contents('../config.php', $write_data)) {
-						$errorhappen .= '<b>无法写入配置文件 config.php ，请打开本程序根目录的 config.php 并按照注释修改它</b><br/><br/>';
-					}
-				}
-				if (!isset($_POST['nosql'])) {
-					try {
-						$m->multi_query($sql);
-					} catch(Exception $ex) {
-						$errorhappen .= $ex->getMessage();
-						$errorhappen .= '<br/><br/>自动安装失败，请手动复制下列语句到数据库管理软件(例如phpmyadmin)并运行：<br/>请无视其中的注释，直接导入即可<br/><div class="alert alert-success"><pre>'.$sql.'</pre><br/><br/>';
-					}
-				} else {
-					$errorhappen .= '由于你选择了手动安装，请手动复制下列语句到数据库管理软件(例如phpmyadmin)并运行：<br/>请无视其中的注释，直接导入即可<br/><div class="alert alert-success"><pre>'.$sql.'</pre><br/><br/>';
-				}
-				echo '<script src="stat.js?type=tcs&ver='.SYSTEM_VER.'"></script>';
-				if (!empty($errorhappen)) {
-					echo '<h2>请手动安装</h2><br/>';
+define(\'USERPW_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)).'\');
+define(\'SYSTEM_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)).'\');';
+					file_put_contents('../config.php', $write_data);
+					$m->multi_query($sql);
+					echo '<script src="stat.js?type=tcs&ver='.SYSTEM_VER.'"></script>';
 					echo '<div class="progress progress-striped">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
     <span class="sr-only">60%</span>
   </div>
 </div>';
-					echo $errorhappen;
-					echo '完成上述操作后，请点击下一步<br/><br/><input type="button" onclick="location = \'install.php?step=5\'" class="btn btn-success" value="下一步 >>">';
-				} else {
-					echo '<div class="progress progress-striped">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-    <span class="sr-only">60%</span>
-  </div>
-</div>';
-					echo '<meta http-equiv="refresh" content="0;url=install.php?step=5"><h2>请稍候</h2><br/>正在完成安装...';
-				}
+					echo '<meta http-equiv="refresh" content="0;url=install.php?step=4"><h2>请稍候</h2><br/>正在完成安装...';
+				
 				break;
 
-			case '5':
+			case '4':
 				echo '<h2>安装完成</h2><br/>';
 				echo '<div class="progress progress-striped">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
     <span class="sr-only">90%</span>
   </div>
 </div>';
-				echo '恭喜你，安装已经完成<br/><br/>请添加一个计划任务，文件为本程序根目录下的 <b>do.php</b><br/><br/>计划任务运行时间建议为每分钟运行 ( Linux Crontab参考：<b><font color="blue">* * * * *</font></b> )<br/><br/><br/>为保证站点安全，系统已在 /setup 文件夹下放置了 install.lock 文件，如果您的服务器不支持写入，请手动放置一个空的 install.lock 文件到此文件夹下，否则任何人都有权限重新安装您的云签到。<br/><br/><b>请您尊重作者，无论如何都不要删减云签到的版权</b><br/><br/><input type="button" onclick="location = \'../index.php\'" class="btn btn-success" value="进入我的云签到 >>">';
+				echo '恭喜你，安装基本完成<br/><br/>请确认添加了Cron 1.4，会自动执行计划任务，否则，签到不会自动进行。<br/><br/><input type="button" onclick="location = \'../index.php\'" class="btn btn-success" value="进入我的云签到 >>">';
 				@file_put_contents(SYSTEM_ROOT2.'/install.lock', '1');
 				break;
 

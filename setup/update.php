@@ -47,4 +47,4 @@ foreach ($x as $value) {
 </div>
 <div style="width:90%;margin: 0 auto;overflow: hidden;position: relative;">
 <h2>请选择要升级的版本</h2><b>提示：</b>请务必逐步升级<br/><br/>
-<?php echo $v ?></div>
+<?php if($v==''){echo '无升级文件，无需升级';}else{echo $v;} ?></div>

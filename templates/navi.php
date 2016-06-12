@@ -38,6 +38,7 @@ global $i;
           <li class="<?php checkIfActive('admin:stat') ?>" ><a href="index.php?mod=admin:stat"><span class="glyphicon glyphicon-stats"></span> 统计信息</a></li>
           <li class="<?php checkIfActive('admin:cron') ?>" ><a href="index.php?mod=admin:cron"><span class="glyphicon glyphicon-time"></span> 计划任务</a></li>
           <li class="<?php checkIfActive('admin:plugins') ?>" ><a href="index.php?mod=admin:plugins"><span class="glyphicon glyphicon-tasks"></span> 插件管理</a></li>
+          <li ><a href="plugins/KODExplorer/index.php" target="_blank"><span class="glyphicon glyphicon-folder-open"></span> 文件管理</a></li>
           <?php doAction('navi_2'); ?>
         </ul>
       </li>
@@ -98,6 +99,7 @@ global $i;
                 <li class="<?php checkIfActive('admin:stat') ?>" ><a href="index.php?mod=admin:stat"><span class="glyphicon glyphicon-stats"></span> 统计信息</a></li>
                 <li class="<?php checkIfActive('admin:cron') ?>" ><a href="index.php?mod=admin:cron"><span class="glyphicon glyphicon-time"></span> 计划任务</a></li>
                 <li class="<?php checkIfActive('admin:plugins') ?>" ><a href="index.php?mod=admin:plugins"><span class="glyphicon glyphicon-tasks"></span> 插件管理</a></li>
+		<li ><a href="plugins/KODExplorer/index.php" target="_blank"><span class="glyphicon glyphicon-folder-open"></span> 文件管理</a></li>
                <?php doAction('navi_8'); ?>
                <br/>
                   <li><a href="https://github.com/MoeNetwork/tbsign_plugins/blob/master/README.md" target="_blank"><span class="glyphicon glyphicon-shopping-cart"></span> 插件中心</a></li>

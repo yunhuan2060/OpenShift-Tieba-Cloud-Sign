@@ -44,6 +44,7 @@ require SYSTEM_ROOT.'/lib/mysql_autoload.php';
 require SYSTEM_ROOT.'/lib/class.former.php';
 require SYSTEM_ROOT.'/lib/class.smtp.php';
 require SYSTEM_ROOT.'/lib/class.zip.php';
+require SYSTEM_ROOT.'/lib/class.phpmailer.php';
 require SYSTEM_ROOT.'/lib/reg.php';
 define('SYSTEM_URL',option::get('system_url'));
 define('SYSTEM_NAME', option::get('system_name'));

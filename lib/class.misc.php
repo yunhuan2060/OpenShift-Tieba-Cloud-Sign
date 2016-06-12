@@ -15,65 +15,45 @@ class misc {
 	 * @return bool 成功:true 失败：错误消息
 	 */
 	public static function mail($to, $sub = '无主题', $msg = '无内容', $att = array()) {
-        if (defined("SAE_MYSQL_DB") && class_exists('SaeMail')){
-            $mail = new SaeMail();
-            $options = Array(
-				'from'          => option::get('mail_name'),
-				'to'            => $to,
-				'smtp_host'     => option::get('mail_host'),
-				'smtp_port'     => option::get('mail_port'), //端口号（默认为25，一般不需修改）
-				'smtp_username' => option::get('mail_smtpname'), //smtp账号
-				'smtp_password' => option::get('mail_smtppw'), //smtp密码
-				'subject'       => $sub, //邮件标题
-				'content'       => $msg, //邮件内容
-				'content_type'  => 'HTML' //HTML格式发送
-            );
-            $mail->setOpt($options);
-            $ret = $mail->send();
-            if ($ret === false) {
-                return 'Mail Send Error: #'.$mail->errno().' - '.$mail->errmsg();
-            } else {
-            	return true;
-            }
-        } else {
-        	$From = option::get('mail_name');
-			if (option::get('mail_mode') == 'SMTP') {
-				$Host = option::get('mail_host');
-				$Port = intval(option::get('mail_port'));
-				$SMTPAuth = (boolean) option::get('mail_auth');
-				$Username = option::get('mail_smtpname');
-				$Password = option::get('mail_smtppw');
-                $Nickname = option::get('mail_yourname');
-				if (option::get('mail_ssl') == '1') {
-					$SSL = true;
-				} else {
-					$SSL = false;
-				}
-				$mail = new SMTP($Host , $Port , $SMTPAuth , $Username , $Password , $SSL);
-				$mail->att = $att;
-				if($mail->send($to , $From , $sub , $msg, $Nickname)) {
-					return true;
-				} else {
-					return $mail->log;
-				}
+		$From = option::get('mail_name');
+		if (option::get('mail_mode') == 'SMTP') {
+			$Host = option::get('mail_host');
+			$Port = intval(option::get('mail_port'));
+			$SMTPAuth = (boolean) option::get('mail_auth');
+			$Username = option::get('mail_smtpname');
+			$Password = option::get('mail_smtppw');
+			$Nickname = option::get('mail_yourname');
+			if (option::get('mail_ssl') == '1') {
+				$SSL = true;
 			} else {
-				$header  = "MIME-Version:1.0\r\n";
-		        $header .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-		        $header .= "To: " . $to . "\r\n";
-		        $header .= "From: " . $From . "\r\n";
-		        $header .= "Subject: " . $sub . "\r\n";
-		        $header .= 'Reply-To: ' . $From . "\r\n";
-		        $header .= "Date: " . date("r") . "\r\n";
-				$header .= "Content-Transfer-Encoding: base64\r\n";
-				return mail(
-					$to,
-					$sub,
-					base64_encode($msg),
-					$header
-				);
+				$SSL = false;
 			}
-	    }
-	}
+			$mail = new SMTP($Host , $Port , $SMTPAuth , $Username , $Password , $SSL);
+			$mail->att = $att;
+			if($mail->send($to , $From , $sub , $msg, $Nickname)) {
+				return true;
+			} else {
+				return $mail->log;
+			}
+		} else {
+			$name = option::get('mail_yourname');
+			$mail = new PHPMailer;
+			$mail->setFrom($From, $name);
+			$mail->addAddress($to);
+			$mail->Subject = $sub;
+			$mail->msgHTML($msg);
+			$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
+			foreach ($att as $n => $d){
+			    $mail->addStringAttachment($d,"=?UTF-8?B?".base64_encode($n)."?=",'base64',get_mime(get_extname($n)));
+			}
+			if (!$mail->send()) {
+			    return $mail->ErrorInfo;
+			} else {
+			    return true;
+			}
+		}
+    }
+
 
 	/** 
 	 * 通过UID判断某个用户是不是VIP
