@@ -10,14 +10,14 @@ if (isset($_COOKIE['uid']) && isset($_COOKIE['pwd'])) {
     if($m->num_rows($osq) == 0) {
         setcookie("uid",'', time() - 3600);
         setcookie("pwd",'', time() - 3600);
-        ReDirect("index.php?mod=login&error_msg=".urlencode('Cookies 所记录的账号信息不正确，请重新登录(#1)')."");die;
+        ReDirect("index.php?mod=login&error_msg=".urlencode('请重新登录')."");die;
     }
 	doAction('globals_1');
 	$p = $m->fetch_array($osq);
-	if ($pw != substr(sha1(EncodePwd($p['pw'])) , 4 , 32)) {
+	if (!P::CheckPwd($pw,$p['pw'])) {
         setcookie("uid",'', time() - 3600);
         setcookie("pwd",'', time() - 3600);
-		ReDirect("index.php?mod=login&error_msg=".urlencode('Cookies 所记录的账号信息不正确，请重新登录(#2)')."");die;
+		ReDirect("index.php?mod=login&error_msg=".urlencode('请重新登录')."");die;
 	} else {
 		define('LOGIN',true);
 		define('ROLE', $p['role']);
@@ -63,7 +63,7 @@ if (isset($_COOKIE['uid']) && isset($_COOKIE['pwd'])) {
 			define('ISVIP', false);
 		}
 		if (ROLE == 'banned') {
-			msg('你已被禁止访问，请联系管理员解封');
+			msg('禁止访问');
 		}
 	}
 	doAction('globals_2');
@@ -86,7 +86,7 @@ if (SYSTEM_PAGE == 'admin:login') {
         ReDirect("index.php?mod=login&error_msg=".urlencode('账户不存在 [ 提示：账户不是昵称，账户可为用户名或者邮箱地址 ]'));die;
     }
 	$p = $m->fetch_array($osq);
-	if (EncodePwd($pw) != $p['pw']) {
+	if (!P::CheckPwd($p['pw'],$pw)) {
 		ReDirect("index.php?mod=login&error_msg=".urlencode('密码错误'));die;
 	} else {
 		doAction('admin_login_3');
@@ -97,11 +97,11 @@ if (SYSTEM_PAGE == 'admin:login') {
 				$cktime = 999999;
 			}
 			setcookie("uid",$p['id'], time() + $cktime);
-			setcookie("pwd",substr(sha1(EncodePwd(EncodePwd($pw))) , 4 , 32), time() + $cktime);
+			setcookie("pwd",P::EncryptPwd($p['pw']), time() + $cktime);
 			ReDirect('index.php');
 		} else {
 			setcookie("uid",$p['id']);
-			setcookie("pwd",substr(sha1(EncodePwd(EncodePwd($pw))) , 4 , 32));
+			setcookie("pwd",P::EncryptPwd($p['pw']));
 			ReDirect('index.php');
 		}
 	}
@@ -150,7 +150,7 @@ elseif (SYSTEM_PAGE == 'admin:reg') {
 		$role = 'user';
 	}
 	doAction('admin_reg_2');
-	$m->query('INSERT INTO `'.DB_NAME.'`.`'.DB_PREFIX.'users` (`id`, `name`, `pw`, `email`, `role`, `t`) VALUES (NULL, \''.$name.'\', \''.EncodePwd($pw).'\', \''.$mail.'\', \''.$role.'\', \''.getfreetable().'\');');
+	$m->query('INSERT INTO `'.DB_NAME.'`.`'.DB_PREFIX.'users` (`id`, `name`, `pw`, `email`, `role`, `t`) VALUES (NULL, \''.$name.'\', \''.P::EncryptPwd($pw).'\', \''.$mail.'\', \''.$role.'\', \''.getfreetable().'\');');
 	doAction('admin_reg_3');
 	ReDirect('index.php?mod=login&msg=' . urlencode('成功注册，请输入账号信息登录本站 [ 账号为用户名或邮箱地址 ]'));
 }

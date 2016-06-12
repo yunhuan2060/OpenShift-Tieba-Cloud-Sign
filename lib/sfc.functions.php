@@ -16,7 +16,7 @@ function getIp() {
 }
 
 /**
- * 加密密码
+ * （弃用）加密密码
  * @param string $pwd 密码
  * @return string 加密的密码
  */

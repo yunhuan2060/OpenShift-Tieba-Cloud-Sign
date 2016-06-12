@@ -4,34 +4,34 @@
  * @copyright (c) Kenvix
  */
 class P {
-	const PWDMODE  = true; //允许从数据库获得密码加密方式？
-	public $pwdmode; 
-	public $mcrypt = false;
-	public $salt   = '';
 
 	/**
-	 * @param string $salt 盐，留空将从config.php读取
+	 * 对用户密码进行加盐加密
+	 * @param string $pwd 密码
+	 * @return string 加密的密码
 	 */
-	public function __construct($salt = '') {
-		if (self::PWDMODE && class_exists('option')) {
-			$this->pwdmode = option::get('pwdmode');
-		} else {
-			$this->pwdmode = 'md5(md5(md5($pwd)))';
-		}
-		if (function_exists('mcrypt_decrypt')) {
-			$this->mcrypt  = true;
-		}
-		/*
-		if (!empty($salt)) {
-			$this->salt    = $salt;
-		} else {
-			$this->salt    = SYSTEM_SALT;
-		}
-		*/
+	public function EncryptPwd($pwd) {
+		$s=base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM));
+		return md5($pwd.USERPW_SALT.$s).$s;
 	}
-
+	
 	/**
-	 * 对数据（通常是密码）进行不可逆加密
+	 * 对加盐密码进行检验
+	 * @param string $pw 加盐密码
+	 * @param string $pwd 密码原文
+	 * @return bool 是否吻合
+	 */
+	public function CheckPwd($pw,$pwd) {
+		$s=substr($pw,32);
+		if (strcmp(md5($pwd.USERPW_SALT.$s).$s,$pw) != 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * 对数据进行不可逆加密
 	 * @param string $pwd 密码
 	 * @return string 加密的密码
 	 */
