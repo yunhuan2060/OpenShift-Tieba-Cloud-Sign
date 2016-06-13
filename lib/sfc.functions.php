@@ -21,8 +21,7 @@ function getIp() {
  * @return string 加密的密码
  */
 function EncodePwd($pwd) {
-	$p = new P();
-	return $p->pwd($pwd);
+	return md5(md5(md5($pwd)));
 }
 
 /**

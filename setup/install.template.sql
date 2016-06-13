@@ -67,7 +67,6 @@ INSERT INTO `{VAR-PREFIX}options` VALUES ('mail_smtppw', '');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('fb', '0');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('cloud', '1');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('enable_addtieba', '1');
-INSERT INTO `{VAR-PREFIX}options` VALUES ('pwdmode', 'md5(md5(md5($pwd)))');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('retry_max', '10');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('cron_order', '1');
 INSERT INTO `{VAR-PREFIX}options` VALUES ('fb_tables', '');

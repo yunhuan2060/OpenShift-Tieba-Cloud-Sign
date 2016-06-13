@@ -16,8 +16,6 @@ function loadhead($title = '') {
 	echo '<title>'.$title.'</title>';
 	echo '<meta name="generator" content="Tieba Cloud Sign Ver.'.SYSTEM_VER.'" />';
 	echo '<link href="favicon.ico" rel="shortcut icon"/>';
-	echo '<meta name="author" content="Kenvix (http://zhizhe8.net) at StusGame GROUP (http://www.stus8.com)" />';
-	echo '<link rel="canonical" href="http://www.stus8.com" />';
 	echo '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />';
 	echo '<script src="source/js/jquery.min.js"></script>';
 	echo '<link rel="stylesheet" href="source/css/bootstrap.min.css">';
@@ -27,8 +25,6 @@ function loadhead($title = '') {
 	echo '<link rel="stylesheet" href="source/css/ui.css">';
 	echo '<link rel="stylesheet" href="source/css/my.css">';
 	echo '<script type="text/javascript" src="source/js/my.js"></script>';
-	echo '<meta name="keywords" content="'.option::get('system_keywords').'" />';
-	echo '<meta name="description" content="'.option::get('system_description').'" />';
 	doAction('header');
 	echo '</head><body>';
 	if (option::get('trigger') == 1) {

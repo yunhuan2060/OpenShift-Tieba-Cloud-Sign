@@ -31,15 +31,6 @@ class P {
 	}
 	
 	/**
-	 * 对数据进行不可逆加密
-	 * @param string $pwd 密码
-	 * @return string 加密的密码
-	 */
-	public function pwd($pwd) {
-		return eval('return '.option::get('pwdmode').';');
-	}
-
-	/**
 	 * 对数据进行可逆加密
 	 * @param string $str 原文
 	 * @param int $cipher 加密算法，留空为默认

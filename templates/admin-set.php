@@ -94,8 +94,6 @@ if (isset($i['mode'][2]) && $i['mode'][2] == 'sign') {
 
 	$content1['system_url'] = array('td1'=>'<b>站点地址</b><br/>后面必须带上 /','type'=>'text','text'=>'','extra'=>'');
 	$content1['system_name'] = array('td1'=>'<b>站点名称</b><br/>支持 HTML','type'=>'text','text'=>'','extra'=>'');
-	$content1['system_keywords'] = array('td1'=>'<b>关键字</b>(Keywords)<br/>SEO功能，以半角逗号(,)为分隔符','type'=>'text','text'=>'','extra'=>'');
-	$content1['system_description'] = array('td1'=>'<b>描述</b>(Description)<br/>SEO功能，以半角逗号(,)为分隔符','type'=>'text','text'=>'','extra'=>'');
 	$footer = htmlspecialchars(option::get('footer'));
 	$footerhtml = '<tr><td><b>自定义底部信息</b><br/><br/>支持 HTML</td><td>
 		<textarea name="footer" class="form-control" style="height:200px">'.$footer.'</textarea>
