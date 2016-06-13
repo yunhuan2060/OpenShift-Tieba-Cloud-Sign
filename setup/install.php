@@ -8,15 +8,9 @@ header("content-type:text/html; charset=utf-8");
 require SYSTEM_ROOT2.'/../lib/msg.php';
 include SYSTEM_ROOT2.'/../lib/class.wcurl.php';
 
-if (file_exists(SYSTEM_ROOT.'/config.php')) {
+if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
     msg('错误：config.php文件已存在，不需要安装<br/><br/>警告：删除config.php文件后仅可<font color="red">全新</font>安装', '../');
 }
-/*
-$csrf = !empty($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER']) : '';
-if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER['SERVER_NAME'] ) ) {
-	msg('安装程序检测到来源异常，已被拦截，请按步骤进行安装！点击返回重新操作','index.php');
-}
-*/
 
 	echo '<!DOCTYPE html><html><head>';
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0">';
@@ -77,7 +71,7 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 				echo '<div class="input-group"><span class="input-group-addon">创始人用户名</span><input type="text" required class="form-control" name="user" placeholder=""></div><br/>';
 				echo '<div class="input-group"><span class="input-group-addon">创始人邮箱</span><input type="email" required class="form-control" name="mail" placeholder=""></div><br/>';
 				echo '<div class="input-group"><span class="input-group-addon">创始人密码</span><input type="password" required class="form-control" name="pw" placeholder=""></div><br/>';
-				//echo '<div class="input-group"><span class="input-group-addon">工具箱执行密码</span><input type="password" required class="form-control" name="toolpw" placeholder=""></div><br/>';
+				echo '<div class="input-group"><span class="input-group-addon">文件管理密码</span><input type="password" required class="form-control" name="kodpw" placeholder=""></div><br/>';
 				echo '<br/><br/><input type="submit" class="btn btn-success" value="下一步 >>"></form>';
 				break;
 
@@ -104,7 +98,6 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 				$sql  = str_ireplace('{VAR-DB}', DB_NAME, $sql);
 				$sql  = str_ireplace('{VAR-ISAPP}', $isapp, $sql);
 				$sql  = str_ireplace('{VAR-TOOLPW}', '', $sql);
-				//$sql  = str_ireplace('{VAR-TOOLPW}', md5(md5(md5($_POST['toolpw']))), $sql);
 				$sql  = str_ireplace('{VAR-SYSTEM-URL}', $http . $_SERVER['HTTP_HOST'] . str_ireplace('setup/', '', $sysurl[0]), $sql);
 				$sql .= "\n"."INSERT INTO `".DB_NAME."`.`".DB_PREFIX."users` (`name`, `pw`, `email`, `role`) VALUES ('{$_POST['user']}', '".EncryptPwd($_POST['pw'])."', '{$_POST['mail']}', 'admin');";
 				require SYSTEM_ROOT.'/lib/mysql_autoload.php';
@@ -116,7 +109,7 @@ if ( isset($_GET['step']) && ( empty($csrf['host']) || $csrf['host'] != $_SERVER
 | 贴吧云签到基础配置文件 - 不要修改！不要修改！不要修改！
 |--------------------------------------------------------------------------
 |
-| 根据系统变量自动设置，切勿修改
+| 根据系统变量自动设置，切勿修改！
 | 带SALT的为盐值，其中USERPW_SALT一旦修改，所有用户无法登陆！
 |
 */
@@ -127,14 +120,16 @@ define(\'DB_NAME\',\''.DB_NAME.'\');
 define(\'DB_PREFIX\',\''.DB_PREFIX.'\');
 define(\'USERPW_SALT\',\''.USERPW_SALT.'\');
 define(\'SYSTEM_SALT\',\''.base64_encode(mcrypt_create_iv(24, MCRYPT_DEV_URANDOM)).'\');';
-					file_put_contents('../config.php', $write_data);
-					echo '<script src="stat.js?type=tcs&ver='.SYSTEM_VER.'"></script>';
-					echo '<div class="progress progress-striped">
+				$kod_data = '<?php exit;?>{"admin":{"name":"admin","password":"'.md5($_POST['kodpw']).'","role":"root","status":0}}';
+				file_put_contents(SYSTEM_ROOT.'/config.php', $write_data);
+				file_put_contents(SYSTEM_ROOT.'/plugins/KODExplorer/data/system/member.php',$kod_data);
+				echo '<script src="stat.js?type=tcs&ver='.SYSTEM_VER.'"></script>';
+				echo '<div class="progress progress-striped">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
     <span class="sr-only">60%</span>
   </div>
 </div>';
-					echo '<meta http-equiv="refresh" content="0;url=install.php?step=4"><h2>请稍候</h2><br/>正在完成安装...';
+				echo '<meta http-equiv="refresh" content="0;url=install.php?step=4"><h2>请稍候</h2><br/>正在完成安装...';
 				
 				break;
 
