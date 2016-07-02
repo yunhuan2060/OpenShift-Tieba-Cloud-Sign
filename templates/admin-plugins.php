@@ -31,11 +31,6 @@ foreach($x as $key => $val) {
 		if (!empty($i['plugins']['info'][$val['plugin']['id']]['ver'])) {
 			$pluginfo .= ' | 已安装版本：' . $i['plugins']['info'][$val['plugin']['id']]['ver'];
 		}
-		if (isset($i['plugins']['info'][$val['plugin']['id']]['ver']) && version_compare($i['plugins']['info'][$val['plugin']['id']]['ver'], $val['plugin']['version']) == -1 && $val['view']['update']) {
-			$pluginfo .= ' | <a href="setting.php?mod=admin:plugins&upd='.$val['plugin']['id'].'" onclick="return confirm(\'你确实要升级此插件吗？\\n'.$val['plugin']['name'].'\');">点击升级到最新版本</a>';
-		} elseif (!empty($val['plugin']['onsale'])) {
-			$pluginfo .= ' | <span id="c_upd" onclick="c_upd(this,\''.$val['plugin']['id'].'\')"><a href="javascript:void(0)">检查更新</a></span>';
-		}
 	} else {
 		$pluginfo .= '<br/>程序版本：1.0';
 	}
@@ -92,7 +87,7 @@ doAction('admin_plugins');
 	echo ' | 您已在全局设置中指定环境为引擎，卸载插件将不会删除插件文件';
 }
 ?>
-<br/><a href="javascript:;" data-toggle="modal" data-target="#InstallPlugin">上传安装插件</a> | <a href="http://s.stus8.com/index.php?mod=list" target="_blank">产品中心</a> | <a href="javascript:;" onclick="alert('请确保插件目录名和插件入口文件的文件名一致(扩展名除外)<br/>例如，插件目录名是 <i>wmzz_debug</i>，则插件入口文件的文件名应该是 <i>wmzz_debug.php</i><br/><br/>如果您是从Git上下载的插件包，请注意去掉文件夹名称-master之类的字符');" target="_blank">找不到上传的插件？</a>
+<br/><a href="javascript:;" data-toggle="modal" data-target="#InstallPlugin">上传安装插件</a> | <a href="javascript:;" onclick="alert('请确保插件目录名和插件入口文件的文件名一致(扩展名除外)<br/>例如，插件目录名是 <i>wmzz_debug</i>，则插件入口文件的文件名应该是 <i>wmzz_debug.php</i><br/><br/>如果您是从Git上下载的插件包，请注意去掉文件夹名称-master之类的字符');" target="_blank">找不到上传的插件？</a>
 </div>
 <form action="setting.php?mod=admin:plugins&xorder" method="post">
 <div class="table-responsive">
@@ -110,33 +105,6 @@ doAction('admin_plugins');
 </table>
 </div><input type="submit" class="btn btn-primary" value="提交更改">
 </form>
-<br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>
-
-<script type="text/javascript">
-	function c_upd(e,plug) {
-		e.innerHTML = '检查更新中...';
-		$.ajax({
-			async:true,
-			url: 'ajax.php?mod=admin:c_update:check&plug=' + plug,
-			type: "GET",
-			data : {},
-			dataType: 'HTML',
-			timeout: 90000,
-			success: function(data){
-				if(data.indexOf("发现新版本") != -1){
-					data = data.split('//');
-					e.innerHTML = data[0];
-					alert(data[2],data[1]);
-				} else {
-					e.innerHTML = data;
-				}
-			},
-			error: function(error){
-				e.innerHTML = '检查失败 [ 点击重试 ]';
-			}
-		});
-	}
-</script>
 
 <div class="modal fade" id="InstallPlugin" tabindex="-1" role="dialog" aria-labelledby="InstallPluginLabel" aria-hidden="true">
   <div class="modal-dialog">

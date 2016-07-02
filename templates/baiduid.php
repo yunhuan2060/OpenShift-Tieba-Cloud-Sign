@@ -49,7 +49,6 @@ global $m;
       echo '<tr><td>'.$key.'</td>';
       $name = empty($i['user']['baidu'][$key]) ? '未记录百度ID' : $i['user']['baidu'][$key];
       if($name == '[E]') $name='<font color="red">已失效</font>';
-      //echo '<td><a href="setting.php?mod=baiduid&reget='.$key.'"">'.$name.'</a></td>';
       echo '<td>'.$name.'</td>';
       echo '<td><input type="text" class="form-control" readonly value="'.$value.'"></td><td><a class="btn btn-default" href="setting.php?mod=baiduid&del='.$key.'">解绑</a></td></tr>';
     }
@@ -95,7 +94,7 @@ global $m;
                           $('#addbdid_submit').removeAttr('disabled');
                           $('#addbdid_ver').css({"display":""});
                       } else if(x.error == 0) {
-                          $('#addbdid_msg').html('成功绑定百度账号：' + x.name);
+                          $('#addbdid_msg').html('成功绑定百度账号：' + x.name + '请刷新');
                           $('#addbdid_pb').css({"width":"100%"});
                           $('#addbdid_prog').fadeOut(500);
                       } else {
@@ -202,5 +201,3 @@ global $m;
 </div>
 </div>
 <!-- END PAGE3 -->
-
-<br/><br/><br/><br/><br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp; <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>

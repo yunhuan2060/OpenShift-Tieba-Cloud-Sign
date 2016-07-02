@@ -23,8 +23,6 @@ function loadhead($title = '') {
 	echo '<style type="text/css">body { font-family:"微软雅黑","Microsoft YaHei";background: #eee; }</style>';
 	echo '<script type="text/javascript" src="source/js/js.js"></script>';
 	echo '<link rel="stylesheet" href="source/css/ui.css">';
-	echo '<link rel="stylesheet" href="source/css/my.css">';
-	echo '<script type="text/javascript" src="source/js/my.js"></script>';
 	doAction('header');
 	echo '</head><body>';
 	if (option::get('trigger') == 1) {
@@ -42,10 +40,7 @@ function loadfoot($copy = false) {
     global $i;
     if(defined('SYSTEM_NO_UI')) return;
 	$icp=option::get('icp');
-	if (!empty($icp)) {
-		echo ' | <a href="http://www.miitbeian.gov.cn/" target="_blank">'.$icp.'</a>';
-	}
-	echo '<br/>'.option::get('footer');
+	echo '<br/><br/><br/><br/>'.option::get('footer');
 	doAction('footer');
     if(is_string(($copy))) {
         if(isset($i['plugins']['desc'][$copy])) {
@@ -71,10 +66,7 @@ function loadfoot($copy = false) {
             }
         }
     }
-    if($copy) {
-        echo '<br/><br/>'.SYSTEM_FN.' V'.SYSTEM_VER.' // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>';
-    }
-	echo '</div></div></div></div></body></html>';
+    echo '</div></div></div></div></body></html>';
 }
 
 /**

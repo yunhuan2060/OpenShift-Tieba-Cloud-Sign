@@ -7,7 +7,7 @@ if (!defined('DO_NOT_LOAD_UI')) {
 	header("content-type:text/html; charset=utf-8");
 	echo '<!DOCTYPE html><html><head>';
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
-	echo '<title>功能检查 - '.SYSTEM_FN.'</title><meta name="generator" content="God.Kenvix\'s Blog (http://zhizhe8.net) and StusGame GROUP (http://www.stus8.com)" /></head><body>';
+	echo '<title>功能检查 - '.SYSTEM_FN.'</title></head><body>';
 	echo '<script src="../source/js/jquery.min.js"></script>';
 	echo '<link rel="stylesheet" href="../source/css/bootstrap.min.css">';
 	echo '<script src="../source/js/bootstrap.min.js"></script>';
@@ -24,12 +24,6 @@ if (!defined('DO_NOT_LOAD_UI')) {
 	    </button>
 	    <a class="navbar-brand" href="check.php">贴吧云签到主机功能检查</a>
 	  </div>
-	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	    <ul class="nav navbar-nav">
-	          <li><a href="http://www.stus8.com" target="_blank">StusGame GROUP</a></li>
-	          <li><a href="http://zhizhe8.net" target="_blank">Kenvix个人博客</a></li>
-	    </ul>
-	  </div><!-- /.navbar-collapse -->
 	</div>
 	<div style="width:90%;margin: 0 auto;overflow: hidden;position: relative;">
 	<?php

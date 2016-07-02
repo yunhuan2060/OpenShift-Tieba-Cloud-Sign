@@ -5,8 +5,8 @@ define('SYSTEM_ROOT2',dirname(__FILE__));
 define('SYSTEM_ROOT',dirname(__FILE__).'/..');
 define('SYSTEM_PAGE',isset($_REQUEST['mod']) ? strip_tags($_REQUEST['mod']) : 'default');
 header("content-type:text/html; charset=utf-8");
-require SYSTEM_ROOT2.'/../lib/msg.php';
-include SYSTEM_ROOT2.'/../lib/class.wcurl.php';
+require SYSTEM_ROOT.'/lib/msg.php';
+include SYSTEM_ROOT.'/lib/class.wcurl.php';
 
 if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
     msg('错误：config.php文件已存在，不需要安装<br/><br/>警告：删除config.php文件后仅可<font color="red">全新</font>安装', '../');
@@ -15,7 +15,7 @@ if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
 	echo '<!DOCTYPE html><html><head>';
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0">';
 	echo '<link href="../favicon.ico" rel="shortcut icon"/>';
-	echo '<title>安装向导 - '.SYSTEM_FN.'</title><meta name="generator" content="God.Kenvix\'s Blog (http://zhizhe8.net) and StusGame GROUP (http://www.stus8.com)" /></head><body>';
+	echo '<title>安装向导 - '.SYSTEM_FN.'</title></head><body>';
 	echo '<script src="../source/js/jquery.min.js"></script>';
 	echo '<link rel="stylesheet" href="../source/css/bootstrap.min.css">';
 	echo '<script src="../source/js/bootstrap.min.js"></script>';
@@ -34,7 +34,7 @@ if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
   </div>
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-          <li><a href="http://www.stus8.com" target="_blank">StusGame GROUP版权所有</a></li>
+          <li><a href="http://moeclub.net/" target="_blank">StusGame GROUP版权所有</a></li>
 		  <li><a href="http://www.yunhuan.tk" target="_blank">云幻修改</a></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -42,10 +42,7 @@ if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
 <div style="width:90%;margin: 0 auto;overflow: hidden;position: relative;">
 <?php
 	if (!isset($_GET['step']) || $_GET['step'] == 0) {
-		echo '<h2>阅读许可协议</h2><br/>';
-		echo '<iframe src="../license.html" style="width:100%;height:465px;"></iframe>';
-		echo '<br/><br/><input type="button" onclick="if(confirm(\'“我尊重原作者为云签事业付出的心血，在使用该永久免费的云签系统的同时将保护原作者的版权。\r\n保证原作者的名称、链接等版权信息不被删改、淡化或遮挡，如果我没有做到，自愿承担由此引发的所有不良后果”\r\n\r\n同意请确定，不同意请取消\')){location = \'install.php?step=1\';} else {alert(\'请立即删除所有与本程序相关的文件及其延伸产品\');location = \'index.html\';}" class="btn btn-success" value="我接受">&nbsp;&nbsp;&nbsp;';
-		echo '<input type="button" onclick=";alert(\'请立即删除所有与本程序相关的文件及其延伸产品\');location = \'index.html\';" class="btn btn-danger" value="我拒绝">';
+		header('Location: install.php?step=1');
 	} else {
 		switch (strip_tags($_GET['step'])) {
 			case '1':
@@ -97,7 +94,6 @@ if (file_exists(SYSTEM_ROOT.'/config.php') xor $_GET['step']=='4') {
 				$sql  = str_ireplace('{VAR-PREFIX}', DB_PREFIX, file_get_contents(SYSTEM_ROOT2.'/install.template.sql'));
 				$sql  = str_ireplace('{VAR-DB}', DB_NAME, $sql);
 				$sql  = str_ireplace('{VAR-ISAPP}', $isapp, $sql);
-				$sql  = str_ireplace('{VAR-TOOLPW}', '', $sql);
 				$sql  = str_ireplace('{VAR-SYSTEM-URL}', $http . $_SERVER['HTTP_HOST'] . str_ireplace('setup/', '', $sysurl[0]), $sql);
 				$sql .= "\n"."INSERT INTO `".DB_NAME."`.`".DB_PREFIX."users` (`name`, `pw`, `email`, `role`) VALUES ('{$_POST['user']}', '".EncryptPwd($_POST['pw'])."', '{$_POST['mail']}', 'admin');";
 				require SYSTEM_ROOT.'/lib/mysql_autoload.php';

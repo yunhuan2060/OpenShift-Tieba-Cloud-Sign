@@ -16,7 +16,6 @@ define('SYSTEM_ROOT',dirname(__FILE__));
 define('PLUGIN_ROOT',dirname(__FILE__) . '/plugins/');
 define('SYSTEM_ISCONSOLE' , (isset($argv) ? true : false));
 define('SYSTEM_PAGE',isset($_REQUEST['mod']) ? strip_tags($_REQUEST['mod']) : 'default');
-define('SUPPORT_URL', 'http://s.stus8.com/tcs/');
 if(SYSTEM_ISCONSOLE)  {
     function console_htmltag_delete($v) {
         $v = str_ireplace(array('</td>','</th>') , ' | ', $v);

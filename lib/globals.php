@@ -183,7 +183,6 @@ elseif (SYSTEM_PAGE == 'admin:logout') {
 	csrf();
 	doAction('logout');
 	setcookie("uid",'', time() - 3600);
-	setcookie("toolpw",'', time() - 3600);
 	setcookie("pwd",'', time() - 3600);
 	ReDirect('index.php?mod=login');
 }

@@ -5,8 +5,6 @@ if (isset($_GET['ok'])) {
 	echo '<div class="alert alert-success">设置保存成功</div>';
 } elseif(isset($_GET['mailtestok'])) {
 	echo '<div class="alert alert-success">一封邮件已经发送到您的邮箱 '.$i['user']['email'].'，请查收</div>';
-} elseif(isset($_GET['bbstestok'])) {
-	echo '<div class="alert alert-success">成功登陆到产品中心</div>';
 }
 
 if (isset($i['mode'][2]) && $i['mode'][2] == 'sign') {
@@ -202,6 +200,4 @@ if (isset($i['mode'][2]) && $i['mode'][2] == 'sign') {
 	/*end 超长内容*/
 	echo former::create($set1,$content1);
 }
-?>
 
-<br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>

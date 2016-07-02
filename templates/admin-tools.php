@@ -2,35 +2,6 @@
 if (ROLE != 'admin') { msg('权限不足！'); }
 global $m;
 
-/*
-$cookies = isset($_COOKIE['toolpw']) ? sqladds($_COOKIE['toolpw']) : '';
-$toolpw = option::get('toolpw');
-if(empty($toolpw)){
-  $stat = '您尚未设置工具箱独立密码，为了您的站点安全，请先完成设置！<br/><i>（工具箱独立密码是4.0版本新增的一项保护站点安全的措施。未经设置，所有风险操作将被禁止。）</i>';
-} elseif(empty($cookies)) {
-  $stat = 'Cookies 未记录或已过期，请重新输入您设置的工具箱独立密码<br/>如果您忘记了该密码，请前往数据库删除options表中的toolpw一项，然后您可以来这里重设新密码';
-} elseif($cookies != $toolpw) {
-  setcookie("toolpw",'', time() - 3600);
-  $stat = 'Cookies 记录的密码错误<br/>如果您忘记了该密码，请前往数据库删除options表中的toolpw一项，然后您可以来这里重设新密码';
-}
-if(!empty($stat)){
-?>
-<div class="alert alert-danger">
-    <h3>工具箱独立密码验证</h3><br/><?php echo $stat; ?><br/><br/>
-    <form action="setting.php?mod=admin:tools" method="post">
-        <div class="input-group">
-            <span class="input-group-addon">工具箱独立密码</span>
-            <input type="password" name="toolpw" class="form-control"/>
-        </div><br/>
-        <button type="submit" class="btn btn-primary">提交</button>
-    </form>
-</div>
-<br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="http://fyy.l19l.com/" target="_blank">FYY</a>
-
-<?php
-die;
-}
-*/
 doAction('admin_tools_1');
 if (isset($_GET['ok'])) {
   echo '<div class="alert alert-success">应用成功</div>';
@@ -50,9 +21,6 @@ if (isset($_GET['ok'])) {
 <br/><br/><input type="button" onclick="location = '<?php echo SYSTEM_URL ?>setting.php?mod=admin:tools&setting=cron_sign_again'" class="btn btn-primary" value="清空签到重试次数统计" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;[ 当前重试次数：<?php $sign_again = unserialize(option::get('cron_sign_again')); echo  $sign_again_num = empty($sign_again['num']) ? 0 : $sign_again['num'] ?> ] 本操作将清除目前的签到重试次数统计
 
 <br/><br/><input type="button" data-toggle="modal" data-target="#BackupTable" class="btn btn-primary" value="导出数据库" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;导出数据库备份
-<!--
-<br/><br/><input type="button" onclick="if(confirm('将花费较长时间，请确认此操作')) location = '<?php echo SYSTEM_URL ?>setting.php?mod=admin:tools&setting=updatefid'" class="btn btn-primary" value="更新未记录的 FID" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;签到时会自动将没有被缓存的 FID 缓存下来，您也可以手动更新 FID 提高签到效率
--->
 <br/><br/><input type="button" data-toggle="modal" data-target="#showdbpw" class="btn btn-primary" value="数据库信息" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;管理数据库
 <?php doAction('admin_tools_3'); ?>
 
@@ -63,7 +31,6 @@ if (isset($_GET['ok'])) {
 <br/><br/><input type="button" data-toggle="modal" data-target="#RemoveTable" class="btn btn-warning" value="删除指定数据表" style="width:170px">&nbsp;&nbsp;&nbsp;&nbsp;请慎用此功能，一般用于删除无用的分表
 
 <?php doAction('admin_tools_2'); ?>
-<br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>
 
 <div class="modal fade" id="RunSql" tabindex="-1" role="dialog" aria-labelledby="RunSqlLabel" aria-hidden="true">
   <div class="modal-dialog">

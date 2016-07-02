@@ -49,7 +49,7 @@ while ($x = $m->fetch_array($s)) {
 }
 
 ?>
-<div class="alert alert-info">目前共有 <?php echo $userc[0]; ?> 名用户。点击 UID 下面的复选框表示对该用户进行操作<br/><a href="index.php?mod=admin:users&add">点击此处可以添加一名用户</a></div>
+<div class="alert alert-info">目前共有 <?php echo $userc[0]; ?> 名用户。点击 UID 下面的复选框表示对该用户进行操作<br/></div>
 <form action="setting.php?mod=admin:users" method="post" onsubmit="return confirm('此操作不可逆，你确定要执行吗？');">
 <div class="table-responsive">
 <table class="table table-hover">
@@ -65,7 +65,7 @@ while ($x = $m->fetch_array($s)) {
 	</tbody>
 </table>
 </div>
-选择操作：<input type="radio" name="do" value="cookie" required> 清除 Cookie &nbsp;&nbsp;&nbsp;&nbsp;
+选择操作：<input type="radio" name="do" value="cookie" required> 清除 BDUSS &nbsp;&nbsp;&nbsp;&nbsp;
 <input type="radio" name="do" value="clean"> 清除贴吧数据 &nbsp;&nbsp;&nbsp;&nbsp;
 <input type="radio" name="do" value="delete"> 删除用户 &nbsp;&nbsp;&nbsp;&nbsp;
 <input type="radio" name="do" value="cset"> 清除个人设置 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -80,5 +80,4 @@ while ($x = $m->fetch_array($s)) {
 <br/><br/><input type="submit" class="btn btn-primary" value="执行操作">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button type="button" class="btn btn-default" onclick="location = 'index.php?mod=admin:users&add'">添加用户</button>
-</form><?php } ?>
-<br/><br/><?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER  . ' ' . SYSTEM_VER_NOTE ?> // 作者: <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a> &amp;  <a href="http://fyy.l19l.com/" target="_blank">FYY</a> &amp; <a href="https://moesign.com/" target="_blank">MoeSign</a>
+</form><?php } 

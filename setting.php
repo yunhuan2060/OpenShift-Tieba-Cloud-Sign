@@ -53,54 +53,6 @@ switch (SYSTEM_PAGE) {
 		Redirect('index.php?mod=admin:plugins&ok');
 		break;
 
-	case 'admin:cloud':
-		doAction('plugin_update_1');
-		global $i;
-		$plug = $i['plugins']['desc'][$_GET['upd']];
-
-		if (!file_exists(UPDATE_CACHE)) {
-			mkdir(UPDATE_CACHE, 0777, true);
-		}
-
-		$up_url = SUPPORT_URL.'getplug.php?m=up&pname='.$_GET['upd'].'&user='.option::get('bbs_us').'&pw='.option::get('bbs_pw');
-		$c = new wcurl($up_url);
-		$file = $c->exec();
-		$c->close();
-
-		if($file == 'WRONG'){
-			msg('错误 - 更新失败：<br/><br/>产品中心拒绝了下载<br/>请检查全局设置中的账号是否正确以及是否购买过此插件');
-		}
-
-		$zipPath = UPDATE_CACHE.'update_plug_'.time().'.zip';
-		if(file_put_contents($zipPath, $file) === false){
-			DeleteFile(UPDATE_CACHE);
-			msg('错误 - 更新失败：<br/><br/>无法下载更新包');
-		}
-
-		//解压缩
-		$z = new zip();
-		$z->open($zipPath);
-		$z->extract(UPDATE_CACHE);
-		$z->close();
-
-		//检查更新文件
-		$floderName = UPDATE_CACHE.$_GET['upd'];
-		if(!is_dir($floderName)){
-			DeleteFile(UPDATE_CACHE);
-			msg('错误 - 更新失败：<br/><br/>无法解压缩更新包');
-		}
-
-		//覆盖文件
-		if(CopyAll($floderName,SYSTEM_ROOT.'/plugins/'.$_GET['upd']) !== true){
-			DeleteFile(UPDATE_CACHE);
-			msg('错误 - 更新失败：<br/><br/>无法更新文件');
-		}
-		DeleteFile(UPDATE_CACHE);
-
-		doAction('plugin_update_2');
-		msg('（1/2）已成功下载最新版本的 '.$plug['plugin']['name'].' 插件。请单击下一步，以完成更新<br/><br/><a href="setting.php?mod=admin:plugins&upd='.$_GET['upd'].'">>> 下一步</a>',false);
-		break;
-
 	case 'admin:set':
 		global $m;
 		$sou = $_POST;
@@ -169,23 +121,6 @@ switch (SYSTEM_PAGE) {
 		break;
 
 	case 'admin:tools':
-		/*
-		$toolpw = option::get('toolpw');
-		if(!empty($_POST['toolpw'])){
-			$cookies = md5(md5(md5($_POST['toolpw'])));
-			if(empty($toolpw)){
-				option::add('toolpw',$cookies);
-				setcookie('toolpw',$cookies);
-				Redirect('index.php?mod=admin:tools&ok');
-			} else {
-				setcookie('toolpw',$cookies);
-				Redirect('index.php?mod=admin:tools');
-			}
-		}
-		if($_COOKIE['toolpw'] != $toolpw || empty($toolpw)){
-			Redirect('index.php?mod=admin:tools');
-		}
-		*/
 		switch (strip_tags($_GET['setting'])) {
 
 		case 'optim':
@@ -260,46 +195,6 @@ switch (SYSTEM_PAGE) {
 			}
 			break;
 
-		/*
-		case 'updatefid':
-			global $m;
-			global $i;
-			$fbs = $i['tabpart'];
-				if (!isset($_GET['ok'])) {
-				$step = $_GET['step'] + 30;
-				$next = isset($_GET['in']) ? strip_tags($_GET['in']) : 'tieba';
-				$c  = $m->once_fetch_array("SELECT COUNT(*) AS `x` FROM `".DB_PREFIX.$next."`");
-				$c2 = $m->once_fetch_array("SELECT COUNT(*) AS `x` FROM `".DB_PREFIX.$next."` WHERE `fid` = '0'");
-				if ($c2['x'] >= 1) {
-					$x  = $m->query("SELECT * FROM `".DB_PREFIX.$next."` WHERE `fid` = '0' LIMIT 30");
-					while ($r = $m->fetch_array($x)) {
-						$fid = misc::getFid($r['tieba']);
-						$m->query("UPDATE `".DB_PREFIX.$next."` SET  `fid` =  '{$fid}' WHERE `".DB_PREFIX.$next."`.`id` = {$r['id']};");
-					}
-				} else {
-					$step = 0;
-					if ($next == 'tieba') {
-						$next = $fbs[1];
-					} else {
-						foreach ($fbs as $ke => $va) {
-							if ($va == $next) {
-								$newkey = $ke + 1;
-								$next = $ke[$newkey];
-								break;
-							}
-						}
-					}
-				}
-
-				if (empty($next)) {
-					msg('<meta http-equiv="refresh" content="0; url='.SYSTEM_URL.'index.php?mod=admin:tools&ok" />即将完成更新......程序将自动继续<br/><br/><a href="'.SYSTEM_URL.'index.php?mod=admin:tools&ok">如果你的浏览器没有自动跳转，请点击这里</a>',false);
-				}
-
-				msg('<meta http-equiv="refresh" content="0; url=setting.php?mod=updatefid&step='.$step.'&in='.$next.'" />已经更新表：'.DB_PREFIX.$next.' / 即将更新表：'.DB_PREFIX.$next.'<br/><br/>当前进度：'.$step.' / '.$c['x'].' <progress style="width:60%" value="'.$step.'" max="'.$c['x'].'"></progress><br/><br/>切勿关闭浏览器，程序将自动继续<br/><br/><a href="setting.php?mod=updatefid&step='.$step.'&in='.$next.'">如果你的浏览器没有自动跳转，请点击这里</a>',false);
-				}
-			break;
-			*/
-
 		case 'install_plugin':
 			doAction('plugin_install_1');
 			if (!class_exists('ZipArchive')) {
@@ -325,13 +220,13 @@ switch (SYSTEM_PAGE) {
 			$rdc = explode('/', $z->getNameIndex(0), 2);
 			$rd  = $rdc[0];
 			if($z->getFromName($rd . '/' . $rd . '.php') === false) {
-				msg('插件安装失败：插件包不合法，请确认此插件为'.SYSTEM_FN.'插件');
+				msg('插件安装失败：插件包不合法，请确认此插件为'.SYSTEM_FN.'插件。如果是从Git上下载的插件包，请注意去掉文件夹名称-master之类的字符');
 			}
 			if(!$z->extractTo(SYSTEM_ROOT . '/plugins')) {
 				msg('插件安装失败：解压缩失败');
 			}
 			doAction('plugin_install_2');
-			msg('插件安装成功');
+			msg('插件安装成功','./index.php?mod=admin:plugins');
 			break;
 
 		default:
@@ -405,7 +300,7 @@ switch (SYSTEM_PAGE) {
 				if ($x['total'] > 0) {
 					msg('添加用户失败：用户名已经存在');
 				}
-				$m->query('INSERT INTO `'.DB_NAME.'`.`'.DB_PREFIX.'users` (`id`, `name`, `pw`, `email`, `role`, `t`) VALUES (NULL, \''.$name.'\', \''.EncryptPwd($pw).'\', \''.$mail.'\', \''.$role.'\', \''.getfreetable().'\');');
+				$m->query('INSERT INTO `'.DB_NAME.'`.`'.DB_PREFIX.'users` (`id`, `name`, `pw`, `email`, `role`, `t`) VALUES (NULL, \''.$name.'\', \''.P::EncryptPwd($pw).'\', \''.$mail.'\', \''.$role.'\', \''.getfreetable().'\');');
 				doAction('admin_users_add');
 				Redirect('index.php?mod=admin:users&ok');
 				break;
@@ -430,7 +325,7 @@ switch (SYSTEM_PAGE) {
 		}
 		elseif (isset($_GET['add'])) {
 			if(stripos($_POST['file'],'do.php') !== false){
-				msg('<h4>请不要将do.php加入到云签的计划任务中来</h4>若需签到，请用云监控监控<br/>'.SYSTEM_URL.'do.php<br/>即可实现计划任务(cron)的效果<br/><br/>推荐云监控:<a href="http://www.aliyun.com/product/jiankong/" target="_blank">阿里云监控</a> 或 <a href="http://jk.cloud.360.cn/" target="_blank">360网站服务监控</a> 或 <a href="http://ce.baidu.com/" target="_blank">百度云观测</a><br/>如果你的服务器在国外且国内访问较慢，则推荐使用:<a href="http://www.mywebcron.com/" target="_blank">Free Web Cron Service </a>',SYSTEM_URL.'index.php?mod=admin:cron');
+				msg('<h4>请不要将do.php加入到云签的计划任务中来</h4>',SYSTEM_URL.'index.php?mod=admin:cron');
 			} else {
 				cron::set($_POST['name'], $_POST['file'], $_POST['no'], $_POST['desc'], $_POST['freq'] ,$_POST['lastdo'], $_POST['log']);
 			}
@@ -470,16 +365,6 @@ switch (SYSTEM_PAGE) {
 		}
 		break;
 
-	case 'admin:create_lock':
-		if (!file_put_contents(SYSTEM_ROOT . '/setup/install.lock', '1')) {
-			$msg = '未能放置 install.lock，请手动完成。<br/><br/>';
-		} else {
-			$msg = '系统成功放置 install.lock，但是如果您的环境为引擎，您必须手工放置<br/><br/>';
-		}
-		$msg .= '若要手工放置，请在云签到的 setup 目录下建立一个 install.lock 文件';
-		msg($msg);
-		break;
-
 	case 'baiduid':
 		if (isset($_GET['delete'])) {
 			doAction('baiduid_set_1');
@@ -512,19 +397,6 @@ switch (SYSTEM_PAGE) {
 			$m->query("DELETE FROM `".DB_NAME."`.`".DB_PREFIX."baiduid` WHERE `".DB_PREFIX."baiduid`.`uid` = ".UID." AND `".DB_PREFIX."baiduid`.`id` = " . $del);
 			$m->query('DELETE FROM `'.DB_NAME.'`.`'.DB_PREFIX.$x['t'].'` WHERE `'.DB_PREFIX.$x['t'].'`.`uid` = '.UID.' AND `'.DB_PREFIX.$x['t'].'`.`pid` = '.$del);
 		}
-		/*
-		elseif (!empty($_GET['reget'])){
-			$reget = (int) $_GET['reget'];
-			$x=$m->once_fetch_array("SELECT * FROM  `".DB_NAME."`.`".DB_PREFIX."baiduid` WHERE `uid` = ".UID." AND `id` = ".$reget." LIMIT 1");
-			if(!empty($x)){
-				$baidu_name = sqladds(getBaiduId($x['bduss']));
-				if(empty($baidu_name)){
-					$baidu_name = '[E]';
-				}
-				$m->query("UPDATE `".DB_NAME."`.`".DB_PREFIX."baiduid` SET `name` = '$baidu_name' WHERE `id` = '$reget'");
-			}
-		}
-		*/
 		doAction('baiduid_set');
 		Redirect("index.php?mod=baiduid");
 		break;
@@ -647,22 +519,6 @@ switch (SYSTEM_PAGE) {
 			Redirect('index.php?mod=admin:set&mailtestok');
 		} else {
 			msg('邮件发送失败，发件日志：<br/>'.$x);
-		}
-		break;
-
-	case 'admin:testbbs':
-		global $i;
-		$ch_url = SUPPORT_URL.'getplug.php?m=check&user='.option::get('bbs_us').'&pw='.option::get('bbs_pw');
-		$c = new wcurl($ch_url);
-		$x = $c->exec();
-		$c->close();
-		if($x == 'RIGHT') {
-			Redirect('index.php?mod=admin:set&bbstestok');
-		} else {
-			if(empty($x)){
-				$x = '错误 - 与产品中心连接失败';
-			}
-			msg('错误 - '.$x);
 		}
 		break;
 }

@@ -48,7 +48,6 @@ global $i;
             <?php doAction('navi_3'); ?>
             <li class="<?php checkIfActive('admin:plugins') ?>" ><a href="index.php?mod=admin:plugins"><span class="glyphicon glyphicon-tasks"></span> 插件管理</a></li>
             <li><a href="https://github.com/MoeNetwork/tbsign_plugins/blob/master/README.md" target="_blank"><span class="glyphicon glyphicon-shopping-cart"></span> 插件中心</a></li>
-            <li><a href="http://s.stus8.com/index.php?mod=list" target="_blank"><span class="glyphicon glyphicon-cloud"></span> 产品中心</a></li>
         </ul>
       </li>
       <?php doAction('navi_4'); } ?>
@@ -64,17 +63,6 @@ global $i;
 	  <?php doAction('navi_10'); ?>
 	</ul>
       <?php } ?>
-    <ul class="nav navbar-nav">
-      <li class="dropdown" class="active">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> 关于 <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="http://www.stus8.com" target="_blank">StusGame GROUP</a></li>
-          <li><a href="http://zhizhe8.net" target="_blank">Kenvix's Blog</a></li>
-          <li><a href="https://moesign.com/" target="_blank">MoeSign</a></li>
-          <?php doAction('navi_5'); ?>
-        </ul>
-      </li>
-  	</ul>
   </div><!-- /.navbar-collapse -->
 </div>
 
@@ -103,7 +91,6 @@ global $i;
                <?php doAction('navi_8'); ?>
                <br/>
                   <li><a href="https://github.com/MoeNetwork/tbsign_plugins/blob/master/README.md" target="_blank"><span class="glyphicon glyphicon-shopping-cart"></span> 插件中心</a></li>
-                  <li><a href="http://s.stus8.com/index.php?mod=list" target="_blank"><span class="glyphicon glyphicon-cloud"></span> 产品中心</a></li>
                <?php doAction('navi_9'); } ?>
               </li>
               <?php } else { ?>
