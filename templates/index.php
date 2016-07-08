@@ -10,13 +10,12 @@ doAction('index_1');
 	</div>
 	<div class="panel-body">
 		<span id="avatar" style="float:right;"><img src="<?php echo getGravatar() ?>" alt="您的头像" title="您的头像" class="img-rounded" height='80px' weight='80px' onerror="$('#avatar').html('无法加载头像');"></span>
-		<?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER ?>.<?php echo SYSTEM_REV ?> <?php echo SYSTEM_VER_NOTE ?>
+		<?php echo SYSTEM_FN ?> V<?php echo SYSTEM_VER ; echo SYSTEM_VER_NOTE ?>&nbsp;&nbsp;&nbsp;&nbsp;OpenShift专版 V<?php echo YH_SYSTEM_V; ?>
 		<br/>
 		点击上方导航栏的 功能菜单 可以列出所有功能
 		<br/>
 		此程序原作者为  <a href="http://zhizhe8.net" target="_blank">Kenvix</a> @ <a href="http://www.stus8.com/" target="_blank">StusGame GROUP</a> &amp; <a href="http://www.longtings.com/" target="_blank">mokeyjay</a>   <a href="https://github.com/MoeNetwork/Tieba-Cloud-Sign" target="_blank">项目地址</a>
 		<br/>由<a href="http://www.yunhuan.tk" target="_blank">云幻</a>进行了修改，以方便<a href="http://www.yunhuan.tk/2016/02/08/%E7%99%BE%E5%BA%A6%E8%B4%B4%E5%90%A7%E4%BA%91%E7%AD%BE%E5%88%B0openshift%E4%B8%93%E7%89%88/" target="_blank">快速安装</a>   <a href="https://github.com/yunhuan2060/OpenShift-Tieba-Cloud-Sign" target="_blank">项目地址</a>
-		<br/>这是一个自由软件（Free Software），可以不受限制地自由使用、复制、研究、修改和分发的，尊重用户自由的软件
 	<?php doAction('index_p_1'); ?>
 	</div>
 </div>

@@ -257,6 +257,28 @@ function CreateZip($orig_fname, $content, $tempzip) {
 }
 
 /**
+ * 远程文件下载到服务器
+ * 支持fopen的打开都可以；支持本地、url 
+ * 
+ */
+function file_download_this($from, $file_name){
+	set_time_limit(0);
+	$fp = @fopen ($from, "rb");
+	if ($fp){
+		$new_fp = @fopen ($file_name, "wb");
+		fclose($new_fp);
+		$download_fp = @fopen ($file_name, "wb");
+		while(!feof($fp)){
+			fwrite($download_fp, fread($fp, 1024 * 8 ), 1024 * 8);
+		}
+		fclose($download_fp);
+		return true;
+	}else{
+		return false;
+	}	
+}
+
+/**
  * 删除文件或目录
  */
 function DeleteFile($file) {
