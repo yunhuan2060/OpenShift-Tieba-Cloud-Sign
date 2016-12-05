@@ -560,9 +560,11 @@ class explorer extends Controller{
         }
     }
     public function image(){
-        if (filesize($this->path) <= 1024*10) {//小于10k 不再生成缩略图
-            file_put_out($this->path);
-        }
+        if (filesize($this->path) <= 1024*20 ||
+			!function_exists('imagecolorallocate') ) {//小于20k或者不支持gd库 不再生成缩略图
+			file_put_out($this->path);
+			return;
+		}
         load_class('imageThumb');
         $image= $this->path;
         $image_md5  = @md5_file($image);//文件md5
@@ -585,8 +587,8 @@ class explorer extends Controller{
             }
         }
         if (!file_exists($image_thum) || filesize($image_thum)<100){//缩略图生成失败则用默认图标
-            $image_thum=STATIC_PATH.'images/image.png';
-        }
+			$image_thum=$this->path;
+		}
         //输出
         file_put_out($image_thum);
     }

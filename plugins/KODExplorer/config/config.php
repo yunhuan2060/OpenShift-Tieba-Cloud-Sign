@@ -10,7 +10,7 @@
 @set_time_limit(600);//10min pathInfoMuti,search,upload,download... 
 @ini_set('session.cache_expire',600);
 @ini_set("display_errors","on");
-@error_reporting(E_ERROR|E_WARNING|E_PARSE);
+@error_reporting(E_ERROR|E_PARSE);
 //error_reporting(E_ALL);
 
 function P($path){return str_replace('\\','/',$path);}
@@ -52,7 +52,7 @@ define('LANGUAGE_PATH', DATA_PATH .'i18n/');        //多语言目录
 define('STATIC_JS','app');  //_dev(开发状态)||app(打包压缩)
 define('STATIC_LESS','css');//less(开发状态)||css(打包压缩)
 //define('STATIC_PATH',"./static/");//静态文件目录
-define('STATIC_PATH','http://static.kalcaddle.com/static/');//静态文件统分离,可单独将static部署到CDN
+define('STATIC_PATH','http://static.kalcaddle.com/kod/static/3.23/');//静态文件统分离,可单独将static部署到CDN
 
 /*
  可以自定义【用户目录】和【公共目录】;移到web目录之外，
@@ -105,7 +105,6 @@ if(isset($in['PHPSESSID'])){//office edit post
 }
 
 @session_start();
-check_post_many();
 session_write_close();//避免session锁定问题;之后要修改$_SESSION 需要先调用session_start()
 $config['autorun'] = array(
 	array('controller'=>'user','function'=>'loginCheck'),

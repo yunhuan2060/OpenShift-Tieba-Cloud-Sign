@@ -122,7 +122,7 @@ $L= array(
 	"php_env_error_gd"  		=>"须开启php GD库, 否则验证码、缩略图使用将不正常",
 	"install_login"  			=>"您可以用如下账号登录",
 	"install_enter"  			=>"进入系统",
-	"install_user_default"  	=>"管理员：admin  密码已设定<br/>",
+	"install_user_default"  	=>"管理员：admin/密码已设定<br/>",
 
 	"copyright_desc"  			=>"这是一款备受好评的web文档管理系统，你可以用它来做内部文档管理或共享、也可以用来管理服务器上的网站，取代Ftp
 		，甚至可以当作webIDE直接在线开发。同时你也可以将此程序二次开发整合到你现有的系统。",

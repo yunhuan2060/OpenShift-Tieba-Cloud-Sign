@@ -121,7 +121,7 @@ $L = array(
 	"php_env_error_gd"  		=>"not open  php GD",
 	"install_login"  			=>"Use the following account login",
 	"install_enter"  			=>"Enter",
-	"install_user_default"  	=>"root：admin/admin(need change)<br/>default：demo/demo<br/>guest：guest/guest",
+	"install_user_default"  	=>"root：admin/password has been set<br/>",
 
 	"copyright_desc"  			=>"This is a highly acclaimed web document management system, you can use it to do the internal document management or share, can also be used to manage the website on the server, instead of Ftp
 Even as webIDE, can be directly online development. You can also integrate the two times the development of this program to your existing system. ",
